@@ -1,0 +1,11 @@
+package com.example.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+import com.example.dto.FundTransferDto;
+
+@FeignClient(name="http://BANKING-SERVICE/demo/bank")
+public interface PaymentServiceClient {
+
+	public String paymentDetails(FundTransferDto fundTransferDto);
+}

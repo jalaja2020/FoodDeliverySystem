@@ -1,0 +1,123 @@
+package com.example.service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.dto.AccountsDto;
+import com.example.dto.FundTransferDto;
+import com.example.entity.Accounts;
+import com.example.entity.Transaction;
+import com.example.entity.Users;
+import com.example.repository.AccountRepository;
+import com.example.repository.TransactionRepository;
+import com.example.repository.UsersRepository;
+
+@Service
+@Transactional
+public class BankingServiceImpl implements BankingService{
+	
+	@Autowired
+	AccountRepository accountRepository;
+	
+	@Autowired
+	UsersRepository usersRepository;
+	
+	@Autowired
+	TransactionRepository transactionRepository;
+
+	@Override
+	public String saveBankAccount(AccountsDto accountDto) {
+		
+		Accounts accounts = new Accounts();
+		accounts.setAccNumber(accountDto.getAccNumber());
+		accounts.setBankName(accountDto.getBankName());
+		accounts.setPhoneNo(accountDto.getPhoneNo());
+		accounts.setAmount(accountDto.getAmount());
+		accounts.setTransDate(new Date());
+		Optional<Users> findByUserId = usersRepository.findById(accountDto.getUserId());
+		if(findByUserId.isPresent()) {
+			Users users = findByUserId.get();
+			accounts.setUsers(users);
+			accountRepository.save(accounts);
+			return "account saved successfully";
+		}else {
+			return "user is not found";
+		}
+		
+	}
+	
+
+	@Override
+	public List<Accounts> fetchBankAccount(String phoneno) {
+		return accountRepository.findByPhoneNo(phoneno);
+	}
+
+	@Override
+	public String fundTransfer(FundTransferDto fundTransferDto) {
+		List<Accounts> findByFromAccNumber = accountRepository.findByAccNumber(fundTransferDto.getFromAccNo());
+		List<Accounts> findByToAccNumber = accountRepository.findByAccNumber(fundTransferDto.getToAccNo());
+		
+		if(!(findByFromAccNumber.isEmpty()) && !(findByToAccNumber.isEmpty())){
+			Accounts fromAccounts = findByFromAccNumber.get(0);
+			float frombalance = fromAccounts.getAmount() - fundTransferDto.getAmount();
+			int updateFromAccount = accountRepository.updateFromAccount(frombalance, fundTransferDto.getFromAccNo());
+			
+			System.out.println("update from account"+updateFromAccount);
+			
+			Accounts toAccounts = findByToAccNumber.get(0);
+			float toBalance = toAccounts.getAmount() + fundTransferDto.getAmount();
+			int updateToAccount = accountRepository.updateToAccount(toBalance, fundTransferDto.getToAccNo());
+			 
+			System.out.println("update to account"+updateToAccount);
+			
+			Transaction transaction = new Transaction();
+			transaction.setFromAccNo(fundTransferDto.getFromAccNo());
+			transaction.setToAccNo(fundTransferDto.getToAccNo());
+			transaction.setTransDate(new Date());
+			transaction.setAmount(fundTransferDto.getAmount());
+			transaction.setAccounts(findByFromAccNumber.get(0));
+			
+			transactionRepository.save(transaction);
+			return "fund transfer successful";
+		}else {
+		return "fund transfer failed";
+		}
+	}
+
+
+	@Override
+	public String RegisterAccount(AccountsDto accountDto) {
+		Accounts accounts = new Accounts();
+		List<Accounts> findByAccNumber = accountRepository.findByAccNumber(accountDto.getAccNumber());
+		if(findByAccNumber.isEmpty() && accountDto.getAmount()>500) {
+		accounts.setAccNumber(accountDto.getAccNumber());
+		accounts.setBankName(accountDto.getBankName());
+		accounts.setPhoneNo(accountDto.getPhoneNo());
+		
+		accounts.setAmount(accountDto.getAmount());
+		accounts.setTransDate(new Date());
+		
+		Optional<Users> findByUserId = usersRepository.findById(accountDto.getUserId());
+		if(findByUserId.isPresent()) {
+			Users users = findByUserId.get();
+			accounts.setUsers(users);
+			accountRepository.save(accounts);
+			return "account saved successfully";
+		}else if(!findByAccNumber.isEmpty()){
+			findByAccNumber.get(0).getAmount();
+			
+		}
+		}else {
+			return "user is not found";
+		}
+	}
+
+	
+
+}

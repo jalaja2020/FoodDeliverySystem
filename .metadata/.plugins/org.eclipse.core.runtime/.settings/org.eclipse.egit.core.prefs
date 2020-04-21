@@ -1,0 +1,4 @@
+GitRepositoriesView.GitDirectories=E\:\\spring\\examples\\SpringBootBatchApplication\\.git;E\:\\spring\\examples\\BankingService\\.git;
+GitRepositoriesView.GitDirectories.relative=SpringBootBatchApplication\\.git;BankingService\\.git;
+core_autoIgnoreDerivedResources=false
+eclipse.preferences.version=1

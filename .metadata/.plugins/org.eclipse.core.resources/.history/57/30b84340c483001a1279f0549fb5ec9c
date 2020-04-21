@@ -1,0 +1,29 @@
+package com.example.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.example.entity.Accounts;
+import java.lang.String;
+import java.util.List;
+@Repository
+public interface AccountRepository extends JpaRepository<Accounts, Integer> {
+
+	List<Accounts> findByPhoneNo(String phoneno);
+	List<Accounts> findByAccNumber(String accnumber);
+	@Modifying
+	 @Query("UPDATE Accounts a SET a.amount = :amount WHERE a.accNumber = :accNumber ")
+	    int updateFromAccount(@Param("amount") float amount, @Param("accNumber") String accNumber);
+	 @Modifying
+	 @Query("UPDATE Accounts a SET a.amount = :amount WHERE a.accNumber = :accNumber ")
+	    int updateToAccount(@Param("amount") float amount, @Param("accNumber") String accNumber);
+	 
+	 
+	 @Modifying
+	 @Query("UPDATE Accounts a SET a.amount = :amount WHERE a.accNumber = :accNumber ")
+	    int updateBalance(@Param("amount") float amount, @Param("accNumber") String accNumber);
+	 
+}

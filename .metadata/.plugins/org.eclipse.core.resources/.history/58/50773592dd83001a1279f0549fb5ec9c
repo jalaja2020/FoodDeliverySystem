@@ -1,0 +1,46 @@
+package com.example.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.dto.AccountsDto;
+import com.example.dto.FundTransferDto;
+import com.example.entity.Accounts;
+import com.example.service.BankingService;
+
+@RestController
+@RequestMapping("/bank")
+public class BankingController {
+	@Autowired
+	BankingService bankingService;
+	
+	@PostMapping("/registerAccount")
+	public String registerAccounts(@RequestBody AccountsDto accountsDto) {
+		return bankingService.registerAccount(accountsDto);
+	}
+	
+	@PostMapping("/saveAccounts")
+	public String saveAccounts(@RequestBody AccountsDto accountsDto) {
+		return bankingService.saveBankAccount(accountsDto);
+	}
+	
+	@GetMapping("{phoneNumber}")
+	public List<Accounts> fetchBankAccount(@PathVariable String phoneNumber)
+	{
+		return bankingService.fetchBankAccount(phoneNumber);
+	}
+	
+	@PostMapping("/fundTransfer")
+	public String fundTransfer(@RequestBody FundTransferDto fundTransferDto) {
+		return bankingService.fundTransfer(fundTransferDto);
+	}
+	
+	
+}

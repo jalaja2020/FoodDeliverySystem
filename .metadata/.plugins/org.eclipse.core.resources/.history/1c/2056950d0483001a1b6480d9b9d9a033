@@ -1,0 +1,16 @@
+package com.example.processor;
+
+import org.springframework.batch.item.ItemProcessor;
+
+import com.example.entity.Items;
+import com.example.entity.Vendors;
+
+public class VendorItemProcessor implements ItemProcessor<Vendors, Vendors>{
+
+	@Override
+	public Vendors process(Vendors item) throws Exception {
+		return null;
+	}
+
+	
+}

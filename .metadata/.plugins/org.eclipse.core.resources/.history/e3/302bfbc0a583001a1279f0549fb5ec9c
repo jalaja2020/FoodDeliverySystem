@@ -1,0 +1,15 @@
+package com.example.processor;
+
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.stereotype.Component;
+
+import com.example.entity.Vendors;
+
+@Component
+public class ValidationVendorProcessor implements ItemProcessor<Vendors, Vendors> {
+
+	public Vendors process(Vendors vendor) throws Exception {
+		System.out.println("Processing Vendor: " + vendor);
+		return vendor;
+	}
+}

@@ -1,0 +1,14 @@
+package com.example.processor;
+
+import org.springframework.batch.item.ItemProcessor;
+
+import com.example.entity.Vendors;
+
+public class VendorItemProcessor implements ItemProcessor<Vendors, Vendors>{
+
+	@Override
+	public Vendors process(Vendors vendors) throws Exception {
+		System.out.println("Inserting employee : " + vendors);
+		return vendors;
+	}
+}

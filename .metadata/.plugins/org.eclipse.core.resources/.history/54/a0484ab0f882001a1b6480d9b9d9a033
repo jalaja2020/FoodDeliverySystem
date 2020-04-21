@@ -1,0 +1,41 @@
+package com.example.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+
+@Configuration
+@EnableBatchProcessing
+public class VendorItemConfig {
+	  @Autowired
+	    private JobBuilderFactory jobBuilderFactory;
+	 
+	    @Autowired
+	    private StepBuilderFactory stepBuilderFactory;
+	 
+	    @Value("classPath:/input/inputData.csv")
+	    private Resource inputResource;
+	 
+	    @Autowired
+
+		DataSource dataSource;
+	    
+	    @Bean
+	    public Job readCSVFileJob() {
+	        return jobBuilderFactory
+	                .get("readCSVFileJob")
+	                .incrementer(new RunIdIncrementer())
+	                .start(step())
+	                .build();
+	    }
+	
+}

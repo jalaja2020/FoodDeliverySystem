@@ -1,0 +1,25 @@
+package com.example.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.dto.CustomerDto;
+import com.example.entity.CustomerDetails;
+import com.example.repository.CustomerDetailsRepository;
+
+@Service
+public class FoodDeliveryServiceImpl implements FoodDeliveryService{
+
+	@Autowired
+	CustomerDetailsRepository customerDetailsRepository;
+	
+	@Override
+	public CustomerDetails customerRegistration(CustomerDto customerDto) {
+		CustomerDetails customerDetails = new CustomerDetails();
+		customerDetails.setCustName(customerDto.getCustName());
+		customerDetails.setPhoneNo(customerDto.getPhoneNumber());
+		return customerDetailsRepository.save(customerDetails);
+	}
+
+	
+}

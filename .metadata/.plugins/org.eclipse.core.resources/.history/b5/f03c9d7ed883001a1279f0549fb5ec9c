@@ -1,0 +1,5 @@
+package com.example.feign;
+@FeignClient(name="http://ORDER-SERVICE/demo/orders")
+public interface PaymentServiceClient {
+
+}

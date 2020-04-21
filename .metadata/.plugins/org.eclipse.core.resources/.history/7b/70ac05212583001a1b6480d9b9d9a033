@@ -1,0 +1,5 @@
+server.port=8761
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+#Disable batch job's auto start 
+spring.batch.job.enabled=true

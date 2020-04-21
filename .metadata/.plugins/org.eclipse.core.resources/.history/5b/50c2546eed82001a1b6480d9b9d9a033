@@ -1,0 +1,14 @@
+package com.example.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="items")
+public class Items {
+
+	Integer id;
+	String itemName;
+	String itemDesc;
+	float price;
+}

@@ -1,0 +1,8 @@
+package com.example.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name="http://BANKING-SERVICE/demo/bank")
+public interface PaymentServiceClient {
+
+}

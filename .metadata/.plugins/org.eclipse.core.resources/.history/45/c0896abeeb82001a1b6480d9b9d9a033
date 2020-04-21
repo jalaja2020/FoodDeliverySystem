@@ -1,0 +1,21 @@
+package com.example;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+import com.example.entity.Vendors;
+
+@SpringBootApplication
+@EnableEurekaClient
+public class DemoApplication {
+
+	@Autowired
+	Vendors vendors;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+
+}

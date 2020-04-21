@@ -1,0 +1,25 @@
+package com.example.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import lombok.Data;
+@Data
+@Entity
+@Table(name="vendors")
+public class Vendors {
+	@Id
+	@SequenceGenerator(name = "mySeqGen", sequenceName = "mySeq", initialValue = 5, allocationSize = 100)
+	@GeneratedValue(generator = "mySeqGen")
+	Integer id;
+	@Column(name="vendor_name")
+	String vendorName;
+	
+
+	
+}

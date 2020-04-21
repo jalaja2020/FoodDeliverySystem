@@ -1,0 +1,8 @@
+package com.example.service;
+
+import com.example.dto.CustomerDto;
+
+public interface FoodDeliveryService {
+	
+	public CustomerDetails customerRegistration(CustomerDto customerDto);
+}

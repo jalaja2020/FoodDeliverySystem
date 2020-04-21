@@ -1,0 +1,11 @@
+package com.example.service;
+
+import com.example.dto.CustomerDto;
+import com.example.entity.CustomerDetails;
+import com.example.entity.Items;
+
+public interface FoodDeliveryService {
+	
+	public CustomerDetails customerRegistration(CustomerDto customerDto);
+	Items searchVendor(int vendorId);
+}

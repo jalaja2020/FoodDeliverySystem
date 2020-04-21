@@ -1,0 +1,91 @@
+package com.example.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import com.example.entity.Items;
+import com.example.entity.Vendors;
+
+@Configuration
+@EnableBatchProcessing
+public class VendorItemConfig {
+	  @Autowired
+	    private JobBuilderFactory jobBuilderFactory;
+	 
+	    @Autowired
+	    private StepBuilderFactory stepBuilderFactory;
+	 
+	    @Value("classPath:/input/FoodDeliverySystem.csv")
+	    private Resource inputResource;
+	 
+	    @Autowired
+
+		DataSource dataSource;
+	    
+	    @Bean
+	    public Job readCSVFileJob() {
+	        return (Job) jobBuilderFactory
+	                .get("readCSVFileJob")
+	                .incrementer(new RunIdIncrementer())
+	                .start(step())
+	                .build();
+	    }
+	    
+	    @Bean
+	    public Step step() {
+	        return stepBuilderFactory
+	                .get("step")
+	                .<Vendors, Items>chunk(5)
+	                .reader(reader())
+	                .processor(processor())
+	                .writer(writer())
+	                .build();
+	    }
+
+	    private ItemWriter<? super Items> writer() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Bean
+	    public ItemReader<Vendors> reader() {
+	        FlatFileItemReader<Vendors> reader = new FlatFileItemReader<Vendors>();
+	        reader.setResource(inputResource);
+	        reader.setLineMapper(new DefaultLineMapper<Vendors>() {{
+	            setLineTokenizer(new DelimitedLineTokenizer() {{
+	                setNames(new String[] {"VendorId", "VendorName" });
+	                setIncludedFields(0,1);
+	            }});
+	            setFieldSetMapper(new BeanWrapperFieldSetMapper<Vendors>() {{
+	                setTargetType(Vendors.class);
+	                
+	            }});
+	        }});
+	        return reader;
+	    }
+	    
+	    @Bean
+	    public ItemProcessor<Vendors, Items> processor() {
+	        return (ItemProcessor<Vendors, Items>) new VendorItemConfig();
+	    }
+	    
+}

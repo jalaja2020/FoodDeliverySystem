@@ -1,0 +1,9 @@
+package com.example.service;
+
+import com.example.dto.CustomerDto;
+import com.example.entity.CustomerDetails;
+
+public interface FoodDeliveryService {
+	
+	public CustomerDetails customerRegistration(CustomerDto customerDto);
+}

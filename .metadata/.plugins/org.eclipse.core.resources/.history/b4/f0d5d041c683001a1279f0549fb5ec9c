@@ -1,0 +1,14 @@
+package com.example.service;
+
+import java.util.List;
+
+import com.example.dto.AccountsDto;
+import com.example.dto.FundTransferDto;
+import com.example.entity.Accounts;
+
+public interface BankingService {
+	public String saveBankAccount(AccountsDto accountDto);
+	public List<Accounts> fetchBankAccount(String phoneNo);
+	public String fundTransfer(FundTransferDto fundTransferDto);
+	public String registerAccount(AccountsDto accountDto);
+}

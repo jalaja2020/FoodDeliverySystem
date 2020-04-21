@@ -1,0 +1,8 @@
+package com.example.processor;
+
+import org.springframework.batch.item.ItemProcessor;
+
+public class VendorItemProcessor implements ItemProcessor<I, O>{
+
+	
+}
